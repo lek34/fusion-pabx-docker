@@ -1,0 +1,32 @@
+# Environment
+.env
+.env.local
+
+# Logs
+logs/
+*.log
+
+# Database dumps
+*.sql
+backup_*.tar.gz
+
+# PostgreSQL data
+data/postgres/
+
+# Docker
+.docker/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+tmp/
+temp/
+*.tmp
