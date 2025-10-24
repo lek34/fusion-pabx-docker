@@ -18,19 +18,41 @@ This project runs a complete VoIP system using Docker with the following compone
 
 ## 🚀 Quick Start
 
-### 1. Build and Start Services
+### Automated Installation (Recommended)
 
+Run the automated installation script:
+
+```bash
+chmod +x install.sh
+./install.sh
+```
+
+This will:
+- Build all Docker images
+- Start all services
+- Install database schema
+- Create admin user (username: `admin`, password: `admin`)
+- Complete all configuration
+
+**Takes 2-3 minutes. Then login at http://localhost**
+
+---
+
+### Manual Installation (Advanced)
+
+If you prefer manual setup:
+
+1. Build and start services:
 ```bash
 docker compose build
 docker compose up -d
 ```
 
-### 2. Access the System
+2. Wait 30 seconds, then go to: `http://localhost/core/install/install.php`
 
-Open your browser and go to:
-```
-http://localhost
-```
+3. Fill in database details and create admin account
+
+---
 
 ### 3. Login
 

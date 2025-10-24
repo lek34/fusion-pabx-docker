@@ -1,12 +1,22 @@
-# 🚀 Quick Start - 5 Minutes to Running System
+# 🚀 Quick Start - 2 Minutes to Running System
 
-## 1️⃣ Start the System
+## 1️⃣ Run Automated Installation
 
 ```bash
+chmod +x install.sh
+./install.sh
+```
+
+Wait 2-3 minutes for completion.
+
+**OR manually:**
+
+```bash
+docker compose build
 docker compose up -d
 ```
 
-Wait 30 seconds.
+Wait 30 seconds, then complete web installer at `http://localhost/core/install/install.php`
 
 ## 2️⃣ Login
 
