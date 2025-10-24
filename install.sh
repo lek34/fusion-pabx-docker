@@ -49,9 +49,9 @@ EOF
 echo "👤 Creating admin user..."
 ADMIN_HASH=$(docker compose exec fusionpbx php -r "echo password_hash('admin', PASSWORD_BCRYPT);")
 docker compose exec postgres psql -U fusionpbx -d fusionpbx << EOF > /dev/null 2>&1
-INSERT INTO v_users (user_uuid, domain_uuid, username, password, user_enabled) 
-VALUES ('650e8400-e29b-41d4-a716-446655440000', '550e8400-e29b-41d4-a716-446655440000', 'admin', '$ADMIN_HASH', 'true')
-ON CONFLICT DO NOTHING;
+INSERT INTO v_users (user_uuid, domain_uuid, username, password, salt, user_enabled) 
+VALUES ('650e8400-e29b-41d4-a716-446655440000', '550e8400-e29b-41d4-a716-446655440000', 'admin', '$ADMIN_HASH', '', 'true')
+ON CONFLICT (user_uuid) DO UPDATE SET password = '$ADMIN_HASH', salt = '';
 EOF
 
 # Create superadmin group
@@ -70,9 +70,20 @@ VALUES ('950e8400-e29b-41d4-a716-446655440000', '550e8400-e29b-41d4-a716-4466554
 ON CONFLICT DO NOTHING;
 EOF
 
+# Install menu and app defaults
+echo "📋 Installing menu and applications..."
+docker compose exec fusionpbx bash -c 'cd /var/www/fusionpbx && php /var/www/fusionpbx/core/menu/app_config.php > /dev/null 2>&1'
+docker compose exec fusionpbx bash -c 'cd /var/www/fusionpbx && php /var/www/fusionpbx/core/upgrade/upgrade_menu.php > /dev/null 2>&1'
+docker compose exec fusionpbx bash -c 'cd /var/www/fusionpbx && php /var/www/fusionpbx/core/upgrade/upgrade_apps.php > /dev/null 2>&1'
+docker compose exec fusionpbx bash -c 'cd /var/www/fusionpbx && php /var/www/fusionpbx/core/upgrade/upgrade_domains.php > /dev/null 2>&1'
+
 # Run domain upgrade
 echo "📦 Finalizing installation..."
 docker compose exec fusionpbx bash -c 'cd /var/www/fusionpbx && php /var/www/fusionpbx/core/upgrade/upgrade.php > /dev/null 2>&1'
+
+# Clear cache
+echo "🧹 Clearing cache..."
+docker compose exec fusionpbx bash -c 'cd /var/www/fusionpbx && php /var/www/fusionpbx/core/cache/cache_clear.php > /dev/null 2>&1'
 
 # Restart services
 echo "🔄 Restarting services..."
