@@ -2,12 +2,20 @@
 
 ## 1️⃣ Run Automated Installation
 
+### On Mac/Linux:
 ```bash
 chmod +x install.sh
 ./install.sh
 ```
 
+### On Windows (WSL/Git Bash):
+```bash
+bash install.sh
+```
+
 Wait 2-3 minutes for completion.
+
+---
 
 **OR manually:**
 

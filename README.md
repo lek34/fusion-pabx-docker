@@ -22,9 +22,15 @@ This project runs a complete VoIP system using Docker with the following compone
 
 Run the automated installation script:
 
+**On Mac/Linux:**
 ```bash
 chmod +x install.sh
 ./install.sh
+```
+
+**On Windows (WSL/Git Bash):**
+```bash
+bash install.sh
 ```
 
 This will:
