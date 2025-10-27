@@ -141,8 +141,25 @@ docker compose ps
 ```
 
 ### Access FreeSWITCH CLI
+
+**Using helper script (Recommended):**
 ```bash
+# Interactive mode
+./fs_cli.sh
+
+# Run specific command
+./fs_cli.sh status
+./fs_cli.sh "show channels"
+./fs_cli.sh "sofia status profile external"
+```
+
+**Direct docker command:**
+```bash
+# Interactive mode
 docker compose exec freeswitch fs_cli
+
+# Run specific command
+docker compose exec freeswitch fs_cli -x "status"
 ```
 
 ## 🎯 Next Steps
@@ -197,9 +214,22 @@ For production:
 - Check config: `docker compose exec fusionpbx cat /etc/fusionpbx/config.conf`
 - Should show `database.0.host = postgres` (not localhost)
 
-### FreeSWITCH not connecting
-- Check if running: `docker compose exec freeswitch fs_cli -x "status"`
-- View logs: `docker compose logs freeswitch`
+### FreeSWITCH not connecting / fs_cli error
+**Error**: `[ERROR] fs_cli.c:1699 main() Error Connecting []`
+
+**Solution**: Event socket IPv6 issue. Run:
+```bash
+# Fix event socket configuration
+docker compose exec -T freeswitch bash -c 'sed -i "s/listen-ip\" value=\"::\"/listen-ip\" value=\"127.0.0.1\"/" /etc/freeswitch/autoload_configs/event_socket.conf.xml'
+
+# Restart FreeSWITCH
+docker compose restart freeswitch
+
+# Wait 10 seconds, then test
+./fs_cli.sh status
+```
+
+**Note**: The `install.sh` script automatically fixes this issue during installation.
 
 ### Menu not showing
 - Clear cache: `docker compose exec fusionpbx rm -rf /var/cache/fusionpbx/*`
