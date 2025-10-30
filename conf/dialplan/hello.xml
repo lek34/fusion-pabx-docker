@@ -1,0 +1,13 @@
+<document type="freeswitch/xml">
+  <section name="dialplan" description="Hello Lua Test">
+    <context name="default">
+      <extension name="ivr_test">
+        <condition field="destination_number" expression="^2000$">
+          <action application="answer"/>
+          <action application="lua" data="hello.lua"/>
+          <action application="hangup"/>
+        </condition>
+      </extension>
+    </context>
+  </section>
+</document>
