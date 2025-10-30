@@ -14,6 +14,11 @@ services:
   fusionpbx:
     build: ./fusionpbx
     container_name: fusionpbx_app
+    environment:
+      - DB_HOST=fusionpbx_postgres
+      - DB_NAME=fusionpbx
+      - DB_USER=fusionpbx
+      - DB_PASS=password123
     volumes:
       - fusionpbx_data:/var/www/fusionpbx
     depends_on:
@@ -27,6 +32,11 @@ services:
     volumes:
       - fusionpbx_data:/var/www/fusionpbx
       - freeswitch_data:/usr/local/freeswitch
+      - ./conf/dialplan:/usr/local/freeswitch/conf/dialplan
+      - ./conf/sip_profiles:/usr/local/freeswitch/conf/sip_profiles
+      - ./conf/directory:/usr/local/freeswitch/conf/directory
+      - ./conf/autoload_configs:/usr/local/freeswitch/conf/autoload_configs
+      - ./scripts:/usr/local/freeswitch/scripts
     depends_on:
       - postgres
       - fusionpbx
