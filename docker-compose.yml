@@ -32,10 +32,10 @@ services:
     volumes:
       - fusionpbx_data:/var/www/fusionpbx
       - freeswitch_data:/usr/local/freeswitch
-      - ./conf/dialplan:/usr/local/freeswitch/conf/dialplan
-      - ./conf/sip_profiles:/usr/local/freeswitch/conf/sip_profiles
-      - ./conf/directory:/usr/local/freeswitch/conf/directory
       - ./conf/autoload_configs:/usr/local/freeswitch/conf/autoload_configs
+      - ./conf/dialplan:/usr/local/freeswitch/conf/dialplan
+      - ./conf/directory:/usr/local/freeswitch/conf/directory
+      - ./conf/sip_profiles:/usr/local/freeswitch/conf/sip_profiles
       - ./scripts:/usr/local/freeswitch/scripts
     depends_on:
       - postgres

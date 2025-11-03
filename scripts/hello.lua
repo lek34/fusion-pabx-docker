@@ -1,30 +1,40 @@
-if not session:ready() then return end
+if not session then return end
+
+local SOUNDS = "/usr/local/freeswitch/sounds/en/us/callie/ivr/16000"
+
 session:answer()
-freeswitch.consoleLog("INFO", "Hello Lua dialplan triggered!\n")
+session:sleep(500)
 
-local sounds_dir = "/usr/local/freeswitch/sounds/en/us/callie/ivr/48000/"
+-- Welcome
+session:streamFile(SOUNDS .. "/ivr-welcome.wav")
+session:sleep(2000)
 
--- main greeting
-session:streamFile(sounds_dir .. "ivr-hello.wav")
+-- Ask for input
+session:streamFile(SOUNDS .. "/ivr-please_enter_pin_followed_by_pound.wav")
 
-while session:ready() do
-    session:streamFile(sounds_dir .. "ivr-sales.wav")
-    session:streamFile(sounds_dir .. "ivr-technical_support.wav")
+local choice = session:getDigits(1, "#", 8000)
+session:consoleLog("info", "=== User pressed: [" .. tostring(choice) .. "] ===\n")
 
-    -- baca 1 digit, timeout 10s, 1 percobaan, terminator "", valid 0-9, flags 0
-    local dtmf = session:read(1, 10000, 1, "", "0123456789", 0)
-
-    if dtmf == "1" then
-        session:streamFile(sounds_dir .. "ivr-hold_connect_call.wav")
-        session:transfer("1001", "XML", "default")
-        break
-    elseif dtmf == "2" then
-        session:streamFile(sounds_dir .. "ivr-hold_connect_call.wav")
-        session:transfer("1002", "XML", "default")
-        break
-    else
-        session:streamFile(sounds_dir .. "ivr-that_was_an_invalid_entry.wav")
-    end
+-- Respond based on input
+if choice == "1" then
+    session:streamFile(SOUNDS .. "/ivr-you_are_number_one.wav")
+    session:sleep(2000)
+elseif choice == "2" then
+    session:streamFile(SOUNDS .. "/ivr-you_are_number.wav")
+    session:sleep(2000)
+elseif choice == "3" then
+    session:streamFile(SOUNDS .. "/ivr-you_are_number.wav")
+    session:sleep(1000)
+    session:execute("echo", "")
+else
+    session:streamFile(SOUNDS .. "/ivr-invalid_number_format.wav")
+    session:sleep(1000)
 end
 
+-- Goodbye
+session:sleep(1000)
+session:streamFile(SOUNDS .. "/ivr-thank_you_for_calling.wav")
+session:sleep(1000)
+session:streamFile(SOUNDS .. "/ivr-hang_up.wav")
+session:sleep(2000)
 session:hangup()

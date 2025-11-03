@@ -1,5 +1,5 @@
 <include>
-  <extension name="lua_test">
+  <extension name="hello_lua">
     <condition field="destination_number" expression="^2000$">
       <action application="lua" data="hello.lua"/>
     </condition>

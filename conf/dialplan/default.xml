@@ -260,8 +260,8 @@
     <extension name="test_2000">
       <condition field="destination_number" expression="^(2000)$">
       <action application="answer"/>
-      <action application="sleep" data="1000"/>
-      <action application="bridge" data="user/2000@${domain_name}"/>
+      <action application="sleep" data="500"/>
+      <action application="lua" data="hello.lua"/>
       </condition>
     </extension>
 
@@ -854,5 +854,6 @@
       </condition>
     </extension>
 
+    <include directory="default"/>
   </context>
 </include>

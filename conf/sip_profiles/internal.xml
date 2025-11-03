@@ -93,10 +93,15 @@
     <param name="inbound-codec-prefs" value="$${global_codec_prefs}"/>
     <param name="outbound-codec-prefs" value="$${global_codec_prefs}"/>
     <param name="rtp-timer-name" value="soft"/>
+
     <!-- ip address to use for rtp, DO NOT USE HOSTNAMES ONLY IP ADDRESSES -->
     <param name="rtp-ip" value="$${local_ip_v4}"/>
+    <!-- <param name="rtp-ip" value="0.0.0.0"/> -->
+
     <!-- ip address to bind to, DO NOT USE HOSTNAMES ONLY IP ADDRESSES -->
     <param name="sip-ip" value="$${local_ip_v4}"/>
+    <!-- <param name="sip-ip" value="0.0.0.0"/> -->
+
     <param name="hold-music" value="$${hold_music}"/>
     <param name="apply-nat-acl" value="nat.auto"/>
 
@@ -132,7 +137,8 @@
     -->
     <param name="local-network-acl" value="localnet.auto"/>
     <!--<param name="apply-register-acl" value="domains"/>-->
-    <!--<param name="dtmf-type" value="info"/>-->
+    <param name="dtmf-type" value="info,rfc2833"/>
+    <param name="inband-dtmf" value="false"/>
 
 
     <!-- 'true' means every time 'first-only' means on the first register -->
